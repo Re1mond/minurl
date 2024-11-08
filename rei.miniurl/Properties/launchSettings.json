@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "rei.miniurl": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7048",
+      "launchBrowser": false
+    }
+  }
+}
