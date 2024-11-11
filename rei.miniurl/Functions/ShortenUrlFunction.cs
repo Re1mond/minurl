@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using rei.miniurl;
 using rei.miniurl.DB;
-using rei.miniurl.Models;
+using rei.miniurl.DBModels;
 
 
 namespace rei.miniurl.Functions;
@@ -23,7 +23,7 @@ public class ShortenUrlFunction
         _cosmosDbService = cosmosDbService;
     }
 
-    [FunctionName("shorten")]
+    [FunctionName("shorturl")]
     public async Task<IActionResult> RunAsync(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]
         HttpRequest req,
@@ -49,6 +49,16 @@ public class ShortenUrlFunction
 
         var shortUrl = $"https://rei.url/{urlEntity.ShortCode}";
         return new OkObjectResult(new { ShortUrl = shortUrl });
+    }
+
+    [FunctionName("GetLongUrl")]
+    public async Task<IActionResult> GetResource(
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "{id?}")] HttpRequest req,
+        string id,
+        ILogger log)
+    {
+        var longUrl = await _cosmosDbService.GetUrlByShortCodeAsync(id);
+        return new OkObjectResult(longUrl.LongUrl);
     }
 
     private string GenerateShortCode(string longUrl)

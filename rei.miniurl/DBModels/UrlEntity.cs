@@ -1,4 +1,4 @@
-namespace rei.miniurl.Models;
+namespace rei.miniurl.DBModels;
 
 public class UrlEntity
 {

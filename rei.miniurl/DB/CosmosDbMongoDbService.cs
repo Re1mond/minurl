@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using rei.miniurl.Models;
+using rei.miniurl.DBModels;
 
 namespace rei.miniurl.DB;
 
