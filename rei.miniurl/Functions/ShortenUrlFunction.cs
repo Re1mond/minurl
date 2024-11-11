@@ -47,18 +47,19 @@ public class ShortenUrlFunction
 
         await _cosmosDbService.AddUrlAsync(urlEntity);
 
-        var shortUrl = $"https://rei.url/{urlEntity.ShortCode}";
+        var shortUrl = $"http://localhost:3000/{urlEntity.ShortCode}";
         return new OkObjectResult(new { ShortUrl = shortUrl });
     }
 
     [FunctionName("GetLongUrl")]
     public async Task<IActionResult> GetResource(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "{id?}")] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "{id?}")]
+        HttpRequest req,
         string id,
         ILogger log)
     {
         var longUrl = await _cosmosDbService.GetUrlByShortCodeAsync(id);
-        return new OkObjectResult(longUrl.LongUrl);
+        return new OkObjectResult(new { redirectUrl = longUrl.LongUrl });
     }
 
     private string GenerateShortCode(string longUrl)
